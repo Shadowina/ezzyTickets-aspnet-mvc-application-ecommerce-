@@ -1,3 +1,6 @@
+using ezzyTickets.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ezzyTickets
 {
     public class Program
@@ -9,7 +12,15 @@ namespace ezzyTickets
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add DbContext Configuration
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")
+                )));
+
             var app = builder.Build();
+
+            AppDbInitializer.Seed(app);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
