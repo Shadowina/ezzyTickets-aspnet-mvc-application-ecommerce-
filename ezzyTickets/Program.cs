@@ -1,4 +1,5 @@
 using ezzyTickets.Data;
+using ezzyTickets.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ezzyTickets
@@ -17,6 +18,9 @@ namespace ezzyTickets
                 builder.Configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")
                 )));
+
+            //Services configuration
+            builder.Services.AddScoped<IActorsService, ActorsService>();
 
             var app = builder.Build();
 
