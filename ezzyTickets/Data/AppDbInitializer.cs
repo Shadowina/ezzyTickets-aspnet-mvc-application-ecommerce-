@@ -1,5 +1,7 @@
 ﻿using ezzyTickets.Data.Enums;
+using ezzyTickets.Data.Static;
 using ezzyTickets.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ezzyTickets.Data
 {
@@ -11,12 +13,17 @@ namespace ezzyTickets.Data
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
 
-                context.Database.EnsureCreated();
-
-                //Cinema
-                if (!context.Cinemas.Any())
+                if (context != null)
                 {
-                    context.Cinemas.AddRange(new List<Cinema>()
+                    context.Database.EnsureCreated();
+
+                    // Update existing movie dates to ensure they are current
+                    UpdateMovieDates(context);
+
+                    //Cinema
+                    if (!context.Cinemas.Any())
+                    {
+                        context.Cinemas.AddRange(new List<Cinema>()
                     {
                         new Cinema()
                         {
@@ -50,14 +57,14 @@ namespace ezzyTickets.Data
                         },
                     });
 
-                    context.SaveChanges();
+                        context.SaveChanges();
 
-                }
+                    }
 
-                //Actors 
-                if (!context.Actors.Any())
-                {
-                    context.Actors.AddRange(new List<Actor>()
+                    //Actors 
+                    if (!context.Actors.Any())
+                    {
+                        context.Actors.AddRange(new List<Actor>()
                     {
                          new Actor()
                         {
@@ -92,13 +99,13 @@ namespace ezzyTickets.Data
                         }
                     });
 
-                    context.SaveChanges();
-                }
+                        context.SaveChanges();
+                    }
 
-                //Producers
-                if (!context.Producers.Any())
-                {
-                    context.Producers.AddRange(new List<Producer>()
+                    //Producers
+                    if (!context.Producers.Any())
+                    {
+                        context.Producers.AddRange(new List<Producer>()
                     {
                          new Producer()
                         {
@@ -132,13 +139,13 @@ namespace ezzyTickets.Data
                             ProfilePictureURL = "http://dotnethow.net/images/producers/producer-5.jpeg"
                         }
                     });
-                    context.SaveChanges();
-                }
+                        context.SaveChanges();
+                    }
 
-                //Movies
-                if (!context.Movies.Any())
-                {
-                    context.Movies.AddRange(new List<Movie>()
+                    //Movies
+                    if (!context.Movies.Any())
+                    {
+                        context.Movies.AddRange(new List<Movie>()
                     {
                         new Movie()
                         {
@@ -146,8 +153,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Life movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-3.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(10),
+                            StartDate = DateTime.Now.AddDays(-5),
+                            EndDate = DateTime.Now.AddDays(15),
                             CinemaId = 3,
                             ProducerId = 3,
                             MovieCategory = MovieCategory.Documentary
@@ -158,8 +165,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Shawshank Redemption description",
                             Price = 29.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-1.jpeg",
-                            StartDate = DateTime.Now,
-                            EndDate = DateTime.Now.AddDays(3),
+                            StartDate = DateTime.Now.AddDays(-2),
+                            EndDate = DateTime.Now.AddDays(8),
                             CinemaId = 1,
                             ProducerId = 1,
                             MovieCategory = MovieCategory.Action
@@ -170,8 +177,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Ghost movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-4.jpeg",
-                            StartDate = DateTime.Now,
-                            EndDate = DateTime.Now.AddDays(7),
+                            StartDate = DateTime.Now.AddDays(-1),
+                            EndDate = DateTime.Now.AddDays(12),
                             CinemaId = 4,
                             ProducerId = 4,
                             MovieCategory = MovieCategory.Horror
@@ -182,8 +189,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Race movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-6.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(-5),
+                            StartDate = DateTime.Now.AddDays(-3),
+                            EndDate = DateTime.Now.AddDays(5),
                             CinemaId = 1,
                             ProducerId = 2,
                             MovieCategory = MovieCategory.Documentary
@@ -194,8 +201,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Scoob movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-7.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(-2),
+                            StartDate = DateTime.Now.AddDays(-2),
+                            EndDate = DateTime.Now.AddDays(10),
                             CinemaId = 1,
                             ProducerId = 3,
                             MovieCategory = MovieCategory.Cartoon
@@ -206,8 +213,8 @@ namespace ezzyTickets.Data
                             Description = "This is the Cold Soles movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-8.jpeg",
-                            StartDate = DateTime.Now.AddDays(3),
-                            EndDate = DateTime.Now.AddDays(20),
+                            StartDate = DateTime.Now.AddDays(1),
+                            EndDate = DateTime.Now.AddDays(25),
                             CinemaId = 1,
                             ProducerId = 5,
                             MovieCategory = MovieCategory.Drama
@@ -215,13 +222,13 @@ namespace ezzyTickets.Data
 
                     });
 
-                    context.SaveChanges();
-                }
+                        context.SaveChanges();
+                    }
 
-                //Actors & Movies
-                if (!context.Actors_Movies.Any())
-                {
-                    context.Actors_Movies.AddRange(new List<Actor_Movie>()
+                    //Actors & Movies
+                    if (!context.Actors_Movies.Any())
+                    {
+                        context.Actors_Movies.AddRange(new List<Actor_Movie>()
                     {
                         new Actor_Movie()
                         {
@@ -316,11 +323,90 @@ namespace ezzyTickets.Data
                         },
                     });
 
-                    context.SaveChanges();
+                        context.SaveChanges();
 
+                    }
+                }
+            }
+        }
+
+        private static void UpdateMovieDates(AppDbContext context)
+        {
+            var movies = context.Movies.ToList();
+            if (movies.Any())
+            {
+                // Update movie dates to ensure they are current
+                var movieUpdates = new Dictionary<string, (DateTime startDate, DateTime endDate)>
+                {
+                    { "Life", (DateTime.Now.AddDays(-5), DateTime.Now.AddDays(15)) },
+                    { "The Shawshank Redemption", (DateTime.Now.AddDays(-2), DateTime.Now.AddDays(8)) },
+                    { "Ghost", (DateTime.Now.AddDays(-1), DateTime.Now.AddDays(12)) },
+                    { "Race", (DateTime.Now.AddDays(-3), DateTime.Now.AddDays(5)) },
+                    { "Scoob", (DateTime.Now.AddDays(-2), DateTime.Now.AddDays(10)) },
+                    { "Cold Soles", (DateTime.Now.AddDays(1), DateTime.Now.AddDays(25)) }
+                };
+
+                foreach (var movie in movies)
+                {
+                    if (movieUpdates.ContainsKey(movie.Name))
+                    {
+                        var (startDate, endDate) = movieUpdates[movie.Name];
+                        movie.StartDate = startDate;
+                        movie.EndDate = endDate;
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+        {
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+
+                //Roles
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+                //Users
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                string adminUserEmail = "admin@etickets.com";
+
+                var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+                if (adminUser == null)
+                {
+                    var newAdminUser = new ApplicationUser()
+                    {
+                        FullName = "Admin User",
+                        UserName = "admin-user",
+                        Email = adminUserEmail,
+                        EmailConfirmed = true
+                    };
+                    await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+                    await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
                 }
 
 
+                string appUserEmail = "user@etickets.com";
+
+                var appUser = await userManager.FindByEmailAsync(appUserEmail);
+                if (appUser == null)
+                {
+                    var newAppUser = new ApplicationUser()
+                    {
+                        FullName = "Application User",
+                        UserName = "app-user",
+                        Email = appUserEmail,
+                        EmailConfirmed = true
+                    };
+                    await userManager.CreateAsync(newAppUser, "Coding@1234?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+                }
             }
         }
     }

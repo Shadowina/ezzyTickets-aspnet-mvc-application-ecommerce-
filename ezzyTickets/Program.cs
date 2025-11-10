@@ -1,5 +1,9 @@
 using ezzyTickets.Data;
 using ezzyTickets.Data.Services;
+using ezzyTickets.Data.Cart;
+using ezzyTickets.Data.Static;
+using ezzyTickets.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ezzyTickets
@@ -19,12 +23,25 @@ namespace ezzyTickets
                 ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")
                 )));
 
+            // Add Identity Configuration
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
             //Services configuration
             builder.Services.AddScoped<IActorsService, ActorsService>();
+            builder.Services.AddScoped<IProducersService, ProducersService>();
+            builder.Services.AddScoped<IMoviesService, MoviesService>();
+            builder.Services.AddScoped<ICinemasService, CinemasService>();
+            builder.Services.AddScoped<IOrdersService, OrdersService>();
+            builder.Services.AddScoped<ShoppingCart>();
+            builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
             AppDbInitializer.Seed(app);
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -37,8 +54,10 @@ namespace ezzyTickets
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

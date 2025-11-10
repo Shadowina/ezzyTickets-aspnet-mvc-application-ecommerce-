@@ -34,7 +34,7 @@
 
 					<div class="form-group mb-4">
 						<label asp-for="Bio" class="control-label"></label>
-						<input asp-for="Bio" class="form-control" />
+						<textarea asp-for="Bio" class="form-control" rows="3"></textarea>
 						<span asp-validation-for="Bio" class="text-danger"></span>
 					</div>
 
@@ -51,9 +51,17 @@
 
 @section Scripts {
 	<script>
+		$(document).ready(function (){
+			var output = document.getElementById('ProfilePicturePreview');
+			output.src =$("#ProfilePictureURL").val();
+		})
+
 		$("#ProfilePictureURL").on("change", function(){
 			var output = document.getElementById('ProfilePicturePreview');
 			output.src =$(this).val();
 		})
 	</script>
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

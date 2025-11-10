@@ -1,23 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ezzyTickets.Data.Base;
 
 namespace ezzyTickets.Models
 {
-    public class Cinema
+    public class Cinema:IEntityBase
     {
 
         [Key]
         public int Id { get; set; }
 
         [Display(Name = "Cinema Logo")]
-        public string Logo { get; set; }
+        [Required(ErrorMessage ="Cinema logo is required")]
+        public string Logo { get; set; } = string.Empty;
 
         [Display(Name = "Cinema Name")]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Cinema Name is required")]
+        public string Name { get; set; } = string.Empty;
 
         [Display(Name = "Description")]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "Cinema description is required")]
+        public string Description { get; set; } = string.Empty;
 
         //Relationship
-        public List<Movie> Movies { get; set; }
+        public List<Movie> Movies { get; set; } = new();
     }
 }
