@@ -4,38 +4,41 @@
     ViewData["Title"] = "Delete producer";
 }
 
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h1>Delete confirmation for @Model.FullName</h1>
-        </p>
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <div class="form-group text-center">
-                    <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProfilePictureURL" class="control-label"></label>
-                    <input asp-for="ProfilePictureURL" class="form-control" readonly />
-                    <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="FullName" class="control-label"></label>
-                    <input asp-for="FullName" class="form-control" readonly />
-                    <span asp-validation-for="FullName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Bio" class="control-label"></label>
-                    <input asp-for="Bio" class="form-control" readonly />
-                    <span asp-validation-for="Bio" class="text-danger"></span>
-                </div>
+<div class="container py-4">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title text-danger">Delete producer</h1>
+            <p class="page-subtitle">Confirm removal of this producer from the catalogue.</p>
+        </div>
+    </div>
 
-                <div class="form-group">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="avatar-preview">
+                            <img id="ProfilePicturePreview" src="@Model.ProfilePictureURL" alt="@Model.FullName" />
+                        </div>
+                    </div>
+
+                    <dl class="row g-3 mb-0">
+                        <dt class="col-sm-4 text-muted">Portrait URL</dt>
+                        <dd class="col-sm-8 text-break">@Model.ProfilePictureURL</dd>
+
+                        <dt class="col-sm-4 text-muted">Full name</dt>
+                        <dd class="col-sm-8">@Model.FullName</dd>
+
+                        <dt class="col-sm-4 text-muted">Biography</dt>
+                        <dd class="col-sm-8">@Model.Bio</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Cancel</a>
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
-                        <input type="submit" value="Confirm" class="btn btn-danger float-right" />
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Confirm delete</button>
                     </form>
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ using ezzyTickets.Data.Static;
 using ezzyTickets.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ezzyTickets
 {
@@ -27,6 +28,13 @@ namespace ezzyTickets
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+            builder.Services.AddSession();
+            builder.Services.AddMemoryCache();
+            builder.Services.AddAuthentication(options => 
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+
 
             //Services configuration
             builder.Services.AddScoped<IActorsService, ActorsService>();
@@ -35,11 +43,12 @@ namespace ezzyTickets
             builder.Services.AddScoped<ICinemasService, CinemasService>();
             builder.Services.AddScoped<IOrdersService, OrdersService>();
             builder.Services.AddScoped<ShoppingCart>();
-            builder.Services.AddSession();
+
             builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
+            //seed database
             AppDbInitializer.Seed(app);
             AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
 
@@ -57,6 +66,7 @@ namespace ezzyTickets
             app.UseSession();
             app.UseRouting();
 
+            //Authentication & Authorization
             app.UseAuthentication();
             app.UseAuthorization();
 

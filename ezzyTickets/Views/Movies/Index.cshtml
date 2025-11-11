@@ -4,72 +4,63 @@
     ViewData["Title"] = "List of Movies";
 }
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-header text-white bg-info">
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.Name 
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a class="text-white float-right" asp-action ="Edit" asp-route-id ="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                    }
-                                </h5>
-                            </p>
+<div class="container py-4">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Movies</h1>
+            <p class="page-subtitle">Discover what’s playing right now and what’s coming soon.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="card card-entity h-100">
+                    <img src="@item.ImageURL" class="card-img-top" alt="@item.Name">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-2">@item.Name</h5>
+                        <p class="text-muted mb-3">@item.Description</p>
+
+                        <div class="mb-3 small text-muted">
+                            <div><span class="fw-semibold text-dark">Cinema:</span> @item.Cinema.Name</div>
+                            <div><span class="fw-semibold text-dark">Category:</span> @item.MovieCategory</div>
+                            <div><span class="fw-semibold text-dark">Starts:</span> @item.StartDate.ToString("dd MMM yy")</div>
+                            <div><span class="fw-semibold text-dark">Ends:</span> @item.EndDate.ToString("dd MMM yy")</div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <img src="@item.ImageURL" width="100%" alt="@item.Name">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <p class="card-text">@item.Description</p>
-                            <p class="card-text"><b>Cinema: </b>@item.Cinema.Name</p>
-                            <p class="card-text"><b>Category: </b> @item.MovieCategory</p>
-                            <p class="card-text"><b>Start Date: </b> @item.StartDate.ToString("dd MMM yy")</p>
-                            <p class="card-text"><b>End Date: </b> @item.EndDate.ToString("dd MMM yy")</p>
-                            <p class="card-text ">
-                                <b>Status: </b>
+
+                        <div class="mt-auto">
+                            <p class="mb-3">
                                 @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.EndDate)
                                 {
-                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                                    <span class="badge badge-status text-bg-success">Available</span>
                                 }
                                 else if (DateTime.Now > item.EndDate)
                                 {
-                                    <span class="badge bg-danger text-white">EXPIRED</span>  
+                                    <span class="badge badge-status text-bg-danger">Expired</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-primary text-white">UPCOMING</span>
+                                    <span class="badge badge-status text-bg-primary">Upcoming</span>
                                 }
                             </p>
-
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card-footer d-flex justify-content-center">
-                            <div class="d-flex gap-3">
-                                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-outline-primary flex-fill" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Details
                                 </a>
-                                <a class="btn btn-success text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")"
+                                <a class="btn btn-success text-white flex-fill @((DateTime.Now > item.EndDate) ? "disabled" : string.Empty)"
                                    asp-controller="Orders"
                                    asp-action="AddItemToShoppingCart"
                                    asp-route-id="@item.Id">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))
+                                    <i class="bi bi-cart-plus"></i> @item.Price.ToString("c")
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-	}
+        }
+    </div>
 </div>
 
 @await Html.PartialAsync("_CreateItem", "Movies")

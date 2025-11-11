@@ -23,14 +23,14 @@ namespace ezzyTickets.Controllers
         }
 
         //GET: Cinemas/Create
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Create() 
         { 
             return View();
         }
 
         [HttpPost]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Create([Bind("Logo,Name,Description")] Cinema cinema)
         {
             if (!ModelState.IsValid) return View(cinema);
@@ -48,7 +48,7 @@ namespace ezzyTickets.Controllers
         }
 
         //Get: Cinemas/Edit/1
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             var cinemaDetails = await _service.GetByIdAsync(id);
@@ -57,7 +57,7 @@ namespace ezzyTickets.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Logo,Name,Description")] Cinema cinema)
         {
             if (!ModelState.IsValid) return View(cinema);

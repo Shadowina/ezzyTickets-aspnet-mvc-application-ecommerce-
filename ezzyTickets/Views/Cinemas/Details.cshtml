@@ -4,49 +4,43 @@
     ViewData["Title"] = "Details of the cinema";
 }
 
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h1>Details for @Model.Name</h1>
-        </p>
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <div class="form-group text-center">
-                    <img class="border-info rounded-circle" style="max-width: 150px" id="LogoPreview" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Logo" class="control-label"></label>
-                    <input asp-for="Logo" class="form-control" readonly />
-                    <span asp-validation-for="Logo" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" readonly />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" readonly />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+<div class="container py-4">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">@Model.Name</h1>
+            <p class="page-subtitle">Information about this cinema.</p>
+        </div>
+    </div>
 
-                <div class="form-group">
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="avatar-preview">
+                            <img id="LogoPreview" src="@Model.Logo" alt="@Model.Name" />
+                        </div>
+                    </div>
+
+                    <dl class="row g-3 mb-0">
+                        <dt class="col-sm-4 text-muted">Logo URL</dt>
+                        <dd class="col-sm-8 text-break">@Model.Logo</dd>
+
+                        <dt class="col-sm-4 text-muted">Name</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        <dt class="col-sm-4 text-muted">Description</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-transparent d-flex justify-content-between">
+                    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Show all</a>
+                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
                     {
-                        <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil-square"></i> Edit cinema</a>
                     }
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var output = document.getElementById('LogoPreview');
-            output.src = $("#Logo").val();
-        })
-    </script>
-}

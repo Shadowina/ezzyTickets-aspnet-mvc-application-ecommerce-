@@ -4,38 +4,41 @@
     ViewData["Title"] = "Delete cinema";
 }
 
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h1>Delete confirmation for @Model.Name</h1>
-        </p>
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <div class="form-group text-center">
-                    <img class="border-info rounded-circle" style="max-width: 150px" id="LogoPreview" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Logo" class="control-label"></label>
-                    <input asp-for="Logo" class="form-control" readonly />
-                    <span asp-validation-for="Logo" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" readonly />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" readonly />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+<div class="container py-4">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title text-danger">Delete cinema</h1>
+            <p class="page-subtitle">Confirm the removal of this cinema.</p>
+        </div>
+    </div>
 
-                <div class="form-group">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="avatar-preview">
+                            <img id="LogoPreview" src="@Model.Logo" alt="@Model.Name" />
+                        </div>
+                    </div>
+
+                    <dl class="row g-3 mb-0">
+                        <dt class="col-sm-4 text-muted">Logo URL</dt>
+                        <dd class="col-sm-8 text-break">@Model.Logo</dd>
+
+                        <dt class="col-sm-4 text-muted">Name</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        <dt class="col-sm-4 text-muted">Description</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Cancel</a>
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
-                        <input type="submit" value="Confirm" class="btn btn-danger float-right" />
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Confirm delete</button>
                     </form>
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                 </div>
             </div>
         </div>

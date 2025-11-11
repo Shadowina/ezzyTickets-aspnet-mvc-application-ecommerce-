@@ -43,7 +43,7 @@ namespace ezzyTickets.Controllers
         }
 
         //GET: Movies/Details/1
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var movieDetail = await _service.GetMovieByIdAsync(id);
@@ -83,7 +83,7 @@ namespace ezzyTickets.Controllers
         }
 
         //GET: Movies/Edit/1
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             var movieDetails = await _service.GetMovieByIdAsync(id);
@@ -113,7 +113,7 @@ namespace ezzyTickets.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Edit(int id, NewMovieVM movie)
         {
             if (id != movie.Id) return View("NotFound");

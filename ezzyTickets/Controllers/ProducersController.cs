@@ -32,14 +32,14 @@ namespace ezzyTickets.Controllers
         }
 
         //GET: producers/create
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Create([Bind("ProfilePictureURL, FullName, Bio")]Producer producer)
         {
             if(!ModelState.IsValid) return View(producer);
@@ -72,7 +72,7 @@ namespace ezzyTickets.Controllers
         
 
         //GET: producers/delete/1
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             var producerDetails = await _service.GetByIdAsync(id);
@@ -81,7 +81,7 @@ namespace ezzyTickets.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var producerDetails = await _service.GetByIdAsync(id);
